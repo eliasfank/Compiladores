@@ -1,0 +1,7 @@
+<cond>::=SE<exp>ENTAO<op>SENAO<op>
+<laco>::=ENQUANTO<exp>FAZ<op>FIMENQUANTO
+<exp>::=<varenum>IGUAL<varenum>|<varenum>MAIOR<varenum>|<varenum>MENOR<varenum>
+<atr>::=:=
+<varenum>::=<var>|<num>
+<var>::=a,b,c
+<num>::=0,1,2,3,4,5,6,7,8,9
