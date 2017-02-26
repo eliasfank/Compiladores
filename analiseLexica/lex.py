@@ -23,7 +23,7 @@ class Lex:
     def __init__(self):
         self._le_arquivo()
         self._gera_automato()
-        self._determiniza()
+        #self._determiniza()
 
     def _gera_automato(self):
         FIRST = 0
