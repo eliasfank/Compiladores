@@ -1,0 +1,20 @@
+"Start Symbol" = <Program>
+
+<Program> ::= <Statements>
+
+{letra} = [a]+[b]+[c]
+
+var = {letra}+
+num = {Digit}+
+<varounum>::= var | num
+<atr>::= var RECEBE num | var RECEBE <soma>| var RECEBE <sub>
+<soma>::= <varounum> MAIS <varounum>
+<sub>::= <varounum> MENOS <varounum>
+<op>::= <atr> | <soma> | <sub>
+<cond>::=SE<exp>ENTAO<op>SENAO<op>
+<laco>::=ENQUANTO<exp>FAZ<op>FIMENQUANTO
+<exp>::=<varounum>IGUAL<varounum>|<varounum>MAIOR<varounum>|<varounum>MENOR<varounum>
+
+<Statement> ::= <atr> | <cond> | <laco>
+
+<Statements> ::= <Statement> <Statements>
