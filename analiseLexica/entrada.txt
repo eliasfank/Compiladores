@@ -1,10 +1,11 @@
 <var>::=a,b,c
 <num>::=0,1,2,3,4,5,6,7,8,9
 <varounum>::=<var>|<num>
-<atr>::=<var>RECEBE<num>|<var>RECEBE<soma>|<var>RECEBE<sub>
-<soma>::=<varounum>MAIS<varounum>
-<sub>::=<varounum>MENOS<varounum>
+<soma>::=<varounum>PLUS<varounum>
+<sub>::=<varounum>SUB<varounum>
+<result>::=<varounum>|<soma>|<sub>
+<atr>::=<var>RECIEVE<result>
 <op>::=<atr>|<soma>|<sub>
-<cond>::=SE<exp>ENTAO<op>SENAO<op>
-<laco>::=ENQUANTO<exp>FAZ<op>FIMENQUANTO
-<exp>::=<varounum>IGUAL<varounum>|<varounum>MAIOR<varounum>|<varounum>MENOR<varounum>
+<cond>::=IF<exp>THEN<op>
+<laco>::=WHILE<exp>DO<op>CLOSEWHILE
+<exp>::=<result>EQUAL<result>|<result>LESSER<result>|<result>BIGGER<result>

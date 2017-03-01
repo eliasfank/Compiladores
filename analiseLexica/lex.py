@@ -23,7 +23,7 @@ class Lex:
     def __init__(self):
         self._le_arquivo()
         self._gera_automato()
-        #self._determiniza()
+        self._determiniza()
 
     def _gera_automato(self):
         FIRST = 0
@@ -165,3 +165,4 @@ if __name__ == '__main__':
     lex = Lex()
     lex.lex_print()
     lex._le_codigo()
+    lex.print_fita()
