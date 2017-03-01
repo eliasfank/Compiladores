@@ -58,8 +58,8 @@ def mapeamento(symbols):
 
 def analisaFita(fita):
     stack = [0]
-    action = -1
-    while action != ACTIONS['Accept']:
+
+    while fita:
         print()
         print("Fita:",fita)
         print("Pilha:",stack)
@@ -94,10 +94,12 @@ def analisaFita(fita):
             action, value= get_action_value(last_item_stack, non_terminal)
 
             # stack.append(value)
+
+        elif action == ACTIONS['Accept']:
+            print('Passou!')
         else:
             break
-    print()
-    print("Passou!")
+
 mapa = mapeamento(m_Symbol)
 print(json.dumps(mapa, indent=4))
 
