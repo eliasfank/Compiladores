@@ -1,14 +1,8 @@
 import json
-
 import xmltodict
-# from collections import queue
 
-FITA = ['var', 'RECEBE', 'num', 'EOF']
-
-
-# FITA = ['enquanto', 'identificador', '>', 'identificador', 'fazer',
-#         'identificador', 'atribuir', 'numero', 'fim', 'EOF']
-
+FITA = ['var', 'RECEBE', 'num', 'SE', 'num', 'IGUAL', 'var', 'ENTAO', 'var', 'RECEBE', 
+        'num', 'SENAO', 'var', 'RECEBE', 'var', 'MAIS', 'num', 'var', 'RECEBE', 'num', 'MAIS', 'var', 'EOF']
 
 ACTIONS = {
     'Shift': '1',
@@ -18,7 +12,6 @@ ACTIONS = {
 }
 
 xml = open('gramatica.xml', 'r').read()
-# xml = open('teste.xml', 'r').read()
 dict_xml = xmltodict.parse(xml)
 
 
@@ -60,47 +53,40 @@ def analisaFita(fita):
     stack = [0]
 
     while fita:
-        print()
-        print("Fita:",fita)
-        print("Pilha:",stack)
-
         item = fita[0]
 
         state = stack[-1]
 
-        print ("Acessando estado ", state)
-        # if state != 0:
-        #     state = mapa[state]
-
         index = mapa[item]
-        print ("Pelo indice ", index)
         action, value = get_action_value(state, index)
 
+        if not action:
+            print("Erro sintático!!")
+            break
+
         if action == ACTIONS['Shift']:
-            #stack.append(mapa[item])
             stack.append(value)
+            print("shift ", value)
             fita.pop(0)
         elif action == ACTIONS['Reduce Rule']:
 
             # acessar o m_Production e pegar o indice que vem do value
             non_terminal, symbol_count = get_m_production(value)
 
-            # tirar da stack 2 * @SymbolCount
             stack = stack[:len(stack) - int(symbol_count)]
-            stack.append(non_terminal)
-
             last_item_stack = stack[-1]
 
             action, value= get_action_value(last_item_stack, non_terminal)
+            stack.append(value)
 
-            # stack.append(value)
+            print("reduce", value)
 
         elif action == ACTIONS['Accept']:
             print('Passou!')
+            break
         else:
             break
 
 mapa = mapeamento(m_Symbol)
-print(json.dumps(mapa, indent=4))
-
+#print(json.dumps(mapa, indent=4))
 analisaFita(FITA)

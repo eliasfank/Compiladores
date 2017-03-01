@@ -125,7 +125,7 @@ class Lex:
                 simbolos = self.automato[estado]
 
                 if c in self.SEP:
-                    FITA['nomes'].append(simbolos[self.FINAL])
+                    FITA['nomes'].append(simbolos[self.FINAL].replace("<","").replace(">",""))
                     FITA['numeros'].append(estado)
                     estado = 0
                 elif simbolos.get(c):
