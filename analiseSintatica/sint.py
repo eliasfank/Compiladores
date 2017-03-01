@@ -1,8 +1,9 @@
 import json
 import xmltodict
 
-FITA = ['var', 'RECEBE', 'var', 'SE', 'num', 'IGUAL', 'var', 'ENTAO', 'var', 'RECEBE', 
-        'num', 'SENAO', 'var', 'RECEBE', 'var', 'MAIS', 'num', 'var', 'RECEBE', 'num', 'MAIS', 'var', 'EOF']
+DADOS = json.load(open("../analiseLexica/fita.txt"))
+
+FITA = (DADOS['nomes'])
 
 ACTIONS = {
     'Shift': '1',
@@ -49,13 +50,24 @@ def mapeamento(symbols):
     return data
 
 def tratarErro(in1, in2):
-	if in1 == '25' and in2 == '14':
-		print("Variável não pode receber variável!")
+	#print(in1, in2)
+	if str(in1) == '39' and str(in2) == '0':
+		print("CLOSEWHILE expected!")
+	if str(in1) == '35' and str(in2) == '14':
+		print("IF or WHILE without correct ending!")
+	if str(in1) == '0' and str(in2) == '11':
+		print("Value assignment without a variable!")
+	if str(in1) == '27' and str(in2) == '11':
+		print("Value assignment without a variable!")
+	if str(in1) == '20' and str(in2) == '11':
+		print("Value assignment without a variable!")
+	if str(in1) == '10' and str(in2) == '11':
+		print("Value assignment without a variable!")
 
 
 def analisaFita(fita):
     stack = [0]
-
+    index_fita = 0
     while fita:
         item = fita[0]
 
@@ -66,14 +78,18 @@ def analisaFita(fita):
 
 
         if not action:
-            print("Erro sintático!!")
+            print("\n\n\n")
+            print("Invalid syntax!!")
             tratarErro(state, index)
+            print("Line: ", DADOS['info'][index_fita]['i_linha'], ", Column: ", DADOS['info'][index_fita]['coluna'], ", Near ",DADOS['rotulo'][index_fita])
+            print("\n\n\n")
             break
 
         if action == ACTIONS['Shift']:
             stack.append(value)
             print("shift ", value)
             fita.pop(0)
+            index_fita+=1
         elif action == ACTIONS['Reduce Rule']:
 
             # acessar o m_Production e pegar o indice que vem do value

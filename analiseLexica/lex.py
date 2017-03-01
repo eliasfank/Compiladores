@@ -1,12 +1,16 @@
 import re
+import json
+import sys
 
 ENTRADA_FILE = 'entrada.txt'
-CODIGO_FILE = 'codigo.txt'
+CODIGO_FILE = '../codigo.txt'
 
 
 FITA = {}
 FITA['nomes'] = []
 FITA['numeros'] = []
+FITA['info'] = []
+FITA['rotulo'] = []
 
 
 class Lex:
@@ -119,22 +123,33 @@ class Lex:
     def _le_codigo(self):
         arquivo = self._abre_arquivo(CODIGO_FILE)
 
-        for i, linha in enumerate(arquivo, start=1):
-            estado = 0
-            for c in linha:
-                simbolos = self.automato[estado]
+        erro = 0
 
+        for i, linha in enumerate(arquivo, start=1):
+            coluna = 0
+            estado = 0
+            rotulo = ''
+            for c in linha:
+                coluna+=1
+                simbolos = self.automato[estado]
+                rotulo = rotulo+c
                 if c in self.SEP:
+                    if erro == 1:
+                        msg = "erro na linha: {}, coluna: {}, perto de: {}".format(i, coluna, rotulo.replace("\n", ""))
+                        print(msg)
+                        sys.exit(0)
                     FITA['nomes'].append(simbolos[self.FINAL].replace("<","").replace(">",""))
                     FITA['numeros'].append(estado)
+                    FITA['info'].append({'i_linha': i, 'linha': linha.replace("\n", ""), 'coluna': coluna})
+                    FITA['rotulo'].append(rotulo.replace("\n", ""))
+                    rotulo = ''
                     estado = 0
                 elif simbolos.get(c):
                     estado = simbolos[c][0]
-                    print(c, estado)
+                    #print(c, estado)
                 else:
                     # erro de token invalido
-                    msg = "erro na linha: {} , {}".format(i, linha)
-                    print(msg)
+                    erro = 1
 
     def _pega_tokens(self, linha):
         linha_comp = re.sub(r'<.*?>', ' ', linha)  # substitui os estados
@@ -148,11 +163,14 @@ class Lex:
     def lex_print(self):
         for i, l in enumerate(self.automato):
             print(i, l)
-    def print_fita(self):
+    def print_write_fita(self):
+        FITA['nomes'].append('EOF')
+        json.dump(FITA, open("fita.txt",'w'))
         for k,v in FITA.items():
             print()
             print(k,v)
             print()
+
 
     def get_estados(self):
         return list(self.estados)
@@ -163,6 +181,6 @@ class Lex:
 
 if __name__ == '__main__':
     lex = Lex()
-    lex.lex_print()
+    #lex.lex_print()
     lex._le_codigo()
-    lex.print_fita()
+    lex.print_write_fita()
