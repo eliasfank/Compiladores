@@ -7,7 +7,7 @@
 var = {letra}+
 num = {Digit}+
 <varounum>::= var | num
-<atr>::= var RECEBE num | var RECEBE <soma>| var RECEBE <sub>
+<atr>::= var RECEBE num | var RECEBE <soma> | var RECEBE <sub>
 <soma>::= <varounum> MAIS <varounum>
 <sub>::= <varounum> MENOS <varounum>
 <op>::= <atr> | <soma> | <sub>
@@ -17,4 +17,4 @@ num = {Digit}+
 
 <Statement> ::= <atr> | <cond> | <laco>
 
-<Statements> ::= <Statement> <Statements>
+<Statements> ::= <Statement> | <Statement> <Statements>

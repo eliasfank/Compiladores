@@ -3,7 +3,7 @@ import json
 import xmltodict
 # from collections import queue
 
-FITA = ['SE', 'num', 'IGUAL', 'var', 'ENTAO', 'var', 'RECEBE', 'num', 'SENAO', 'var', 'RECEBE', 'num']
+FITA = ['var', 'RECEBE', 'num', 'EOF']
 
 
 # FITA = ['enquanto', 'identificador', '>', 'identificador', 'fazer',
@@ -58,19 +58,26 @@ def mapeamento(symbols):
 
 def analisaFita(fita):
     stack = [0]
+    action = -1
+    while action != ACTIONS['Accept']:
+        print()
+        print("Fita:",fita)
+        print("Pilha:",stack)
 
-    while fita:
         item = fita[0]
 
         state = stack[-1]
+
+        print ("Acessando estado ", state)
         # if state != 0:
         #     state = mapa[state]
 
         index = mapa[item]
+        print ("Pelo indice ", index)
         action, value = get_action_value(state, index)
 
         if action == ACTIONS['Shift']:
-            # stack.append(item)
+            #stack.append(mapa[item])
             stack.append(value)
             fita.pop(0)
         elif action == ACTIONS['Reduce Rule']:
@@ -87,13 +94,10 @@ def analisaFita(fita):
             action, value= get_action_value(last_item_stack, non_terminal)
 
             # stack.append(value)
-
-            print(state)
-        elif action == ACTIONS['Accept']:
-            print('Passou!')
         else:
             break
-
+    print()
+    print("Passou!")
 mapa = mapeamento(m_Symbol)
 print(json.dumps(mapa, indent=4))
 
