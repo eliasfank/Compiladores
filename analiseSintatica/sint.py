@@ -1,7 +1,7 @@
 import json
 import xmltodict
 
-FITA = ['var', 'RECEBE', 'num', 'SE', 'num', 'IGUAL', 'var', 'ENTAO', 'var', 'RECEBE', 
+FITA = ['var', 'RECEBE', 'var', 'SE', 'num', 'IGUAL', 'var', 'ENTAO', 'var', 'RECEBE', 
         'num', 'SENAO', 'var', 'RECEBE', 'var', 'MAIS', 'num', 'var', 'RECEBE', 'num', 'MAIS', 'var', 'EOF']
 
 ACTIONS = {
@@ -48,6 +48,10 @@ def mapeamento(symbols):
         })
     return data
 
+def tratarErro(in1, in2):
+	if in1 == '25' and in2 == '14':
+		print("Variável não pode receber variável!")
+
 
 def analisaFita(fita):
     stack = [0]
@@ -60,8 +64,10 @@ def analisaFita(fita):
         index = mapa[item]
         action, value = get_action_value(state, index)
 
+
         if not action:
             print("Erro sintático!!")
+            tratarErro(state, index)
             break
 
         if action == ACTIONS['Shift']:
